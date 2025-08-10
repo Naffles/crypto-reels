@@ -1,0 +1,26 @@
+{
+  "name": "crypto-reels",
+  "version": "1.0.0",
+  "description": "CryptoReels - External slot machine game for Naffles platform",
+  "main": "index.js",
+  "scripts": {
+    "setup": "node install.js",
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm run dev",
+    "backend:start": "cd backend && npm start",
+    "frontend:start": "cd frontend && npm start",
+    "backend:build": "cd backend && npm run build",
+    "frontend:build": "cd frontend && npm run build",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "test": "concurrently \"cd backend && npm test\" \"cd frontend && npm test\"",
+    "docker:dev": "docker-compose -f docker-compose.development.yml up",
+    "docker:build": "docker-compose -f docker-compose.development.yml up --build"
+  },
+  "keywords": ["crypto", "slots", "naffles", "blockchain", "gaming"],
+  "author": "Naffles Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

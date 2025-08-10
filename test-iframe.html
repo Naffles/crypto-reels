@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoReels Iframe Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #1a1a2e;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+        
+        .iframe-container {
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: block;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #FFD700, #F7931A);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+        }
+        
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            border-left: 4px solid #FFD700;
+        }
+        
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .status.connected {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+        }
+        
+        .status.disconnected {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎰 CryptoReels Iframe Integration Test</h1>
+        
+        <div class="info">
+            <h3>Test Information:</h3>
+            <ul>
+                <li><strong>Purpose:</strong> Test iframe embedding capability for Naffles platform integration</li>
+                <li><strong>Game URL:</strong> <span id="gameUrl">http://localhost:3002</span></li>
+                <li><strong>Expected Behavior:</strong> Game should load in iframe and enter test mode automatically</li>
+                <li><strong>Test Mode:</strong> Should display "TEST MODE" banner with free credits</li>
+            </ul>
+        </div>
+        
+        <div class="status" id="status">
+            <span id="statusText">Loading...</span>
+        </div>
+        
+        <div class="iframe-container">
+            <iframe 
+                id="cryptoReelsFrame"
+                src="http://localhost:3002"
+                title="CryptoReels Game"
+                allowfullscreen>
+            </iframe>
+        </div>
+        
+        <div class="controls">
+            <button onclick="reloadIframe()">🔄 Reload Game</button>
+            <button onclick="toggleSize()">📏 Toggle Size</button>
+            <button onclick="testMessage()">💬 Test Message</button>
+            <button onclick="checkConnection()">🔗 Check Connection</button>
+        </div>
+        
+        <div class="info">
+            <h3>Integration Features Being Tested:</h3>
+            <ul>
+                <li>✅ Iframe embedding with proper security headers</li>
+                <li>✅ Automatic test mode activation when Naffles unavailable</li>
+                <li>✅ Responsive design within iframe constraints</li>
+                <li>✅ Cross-origin communication setup</li>
+                <li>⏳ Message passing between parent and iframe (to be implemented)</li>
+                <li>⏳ Dynamic iframe resizing (to be implemented)</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let isLargeSize = false;
+        const iframe = document.getElementById('cryptoReelsFrame');
+        const statusElement = document.getElementById('status');
+        const statusText = document.getElementById('statusText');
+
+        // Check iframe load status
+        iframe.onload = function() {
+            updateStatus('connected', 'Game loaded successfully in iframe');
+        };
+
+        iframe.onerror = function() {
+            updateStatus('disconnected', 'Failed to load game in iframe');
+        };
+
+        function updateStatus(type, message) {
+            statusElement.className = `status ${type}`;
+            statusText.textContent = message;
+        }
+
+        function reloadIframe() {
+            updateStatus('disconnected', 'Reloading...');
+            iframe.src = iframe.src;
+        }
+
+        function toggleSize() {
+            if (isLargeSize) {
+                iframe.style.height = '600px';
+                isLargeSize = false;
+            } else {
+                iframe.style.height = '800px';
+                isLargeSize = true;
+            }
+        }
+
+        function testMessage() {
+            // Test postMessage communication
+            try {
+                iframe.contentWindow.postMessage({
+                    type: 'test:message',
+                    data: { message: 'Hello from parent frame!' },
+                    source: 'naffles'
+                }, 'http://localhost:3002');
+                
+                updateStatus('connected', 'Test message sent to iframe');
+            } catch (error) {
+                updateStatus('disconnected', 'Failed to send message: ' + error.message);
+            }
+        }
+
+        function checkConnection() {
+            fetch('http://localhost:3002/api/game/initialize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: 'test' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateStatus('connected', 'Backend API responding: ' + data.message);
+            })
+            .catch(error => {
+                updateStatus('disconnected', 'Backend API error: ' + error.message);
+            });
+        }
+
+        // Listen for messages from iframe
+        window.addEventListener('message', function(event) {
+            if (event.origin !== 'http://localhost:3002') return;
+            
+            console.log('Received message from CryptoReels:', event.data);
+            
+            if (event.data.source === 'crypto-reels') {
+                switch (event.data.type) {
+                    case 'iframe:ready':
+                        updateStatus('connected', 'Iframe communication established');
+                        break;
+                    case 'game:initialized':
+                        console.log('Game initialized:', event.data.data);
+                        break;
+                    case 'balance:changed':
+                        console.log('Balance changed:', event.data.data);
+                        break;
+                    case 'resize':
+                        if (event.data.data.height) {
+                            iframe.style.height = event.data.data.height + 'px';
+                        }
+                        break;
+                }
+            }
+        });
+
+        // Initial connection check
+        setTimeout(checkConnection, 1000);
+    </script>
+</body>
+</html>

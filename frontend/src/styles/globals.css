@@ -1,0 +1,178 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Import crypto-themed fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Global styles for iframe embedding */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Prevent scrollbars in iframe */
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  font-family: 'Orbitron', monospace;
+}
+
+#__next {
+  height: 100%;
+}
+
+/* Custom scrollbar for better iframe experience */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Crypto-themed animations */
+@keyframes crypto-glow {
+  0%, 100% {
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+  }
+  50% {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+}
+
+@keyframes blockchain-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(57, 255, 20, 0);
+  }
+}
+
+/* Utility classes */
+.crypto-glow {
+  animation: crypto-glow 2s ease-in-out infinite;
+}
+
+.blockchain-pulse {
+  animation: blockchain-pulse 2s infinite;
+}
+
+.neon-border {
+  border: 2px solid;
+  border-image: linear-gradient(45deg, #00FFFF, #FF10F0, #39FF14, #FFD700) 1;
+}
+
+/* Test mode specific styles */
+.test-mode-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, #ff6b35, #f7931e);
+  color: white;
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+  z-index: 1000;
+  font-size: 14px;
+}
+
+.test-mode-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.test-mode-icon {
+  font-size: 16px;
+}
+
+.test-mode-subtitle {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.test-credits {
+  color: #ff6b35 !important;
+  font-weight: bold;
+}
+
+.reset-credits-btn {
+  background: linear-gradient(45deg, #ff6b35, #f7931e);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-credits-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
+}
+
+.test-nft-item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 107, 53, 0.5);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+}
+
+.nft-test-label {
+  color: #ff6b35;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.insufficient-credits-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: #1a1a2e;
+  border: 2px solid #ff6b35;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  color: white;
+  max-width: 400px;
+}
+
+.modal-content h3 {
+  color: #ff6b35;
+  margin-bottom: 16px;
+}
+
+.modal-content button {
+  background: #ff6b35;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 16px;
+}
